@@ -1,0 +1,82 @@
+# 🔬 {{ topic_name }} — Technical Research Digest
+
+**Date:** {{ run_date }} | **Papers reviewed:** {{ total_papers }}
+
+---
+
+{% if trends %}
+## Trend Analysis
+
+{% if trends.emerging_themes is defined and trends.emerging_themes %}
+### Emerging Themes
+{% for theme in trends.emerging_themes %}
+- {{ theme }}
+{% endfor %}
+{% endif %}
+
+{% if trends.continued_threads is defined and trends.continued_threads %}
+### Continued Research Threads
+{% for thread in trends.continued_threads %}
+- {{ thread }}
+{% endfor %}
+{% endif %}
+
+{% if trends.new_directions is defined and trends.new_directions %}
+### New Directions
+{% for direction in trends.new_directions %}
+- {{ direction }}
+{% endfor %}
+{% endif %}
+
+{% if trends.notable_shifts is defined and trends.notable_shifts %}
+### Notable Methodology Shifts
+{% for shift in trends.notable_shifts %}
+- {{ shift }}
+{% endfor %}
+{% endif %}
+
+---
+
+{% endif %}
+## Papers
+
+{% for paper in papers %}
+### {{ loop.index }}. {{ paper.title }} [{{ paper.score | default(0) | round(1) }}/10]
+
+| Field | Detail |
+|-------|--------|
+| **Authors** | {{ paper.authors if paper.authors is string else paper.authors | join(', ') }} |
+| **Categories** | {{ paper.categories | join(', ') }} |
+| **Impact Score** | {{ paper.score | default(0) | round(1) }}/10 |
+{% if paper.citation_count is defined and paper.citation_count %}
+| **Citations** | {{ paper.citation_count }} |
+{% endif %}
+| **PDF** | [{{ paper.pdf_url }}]({{ paper.pdf_url }}) |
+
+#### Assessment
+
+{{ paper.reasoning | default('No assessment available.') }}
+
+{% if paper.score_breakdown is defined and paper.score_breakdown %}
+#### Score Breakdown
+
+| Factor | Score |
+|--------|-------|
+{% for factor, value in paper.score_breakdown.items() %}
+| {{ factor }} | {{ value }} |
+{% endfor %}
+{% endif %}
+
+#### Abstract
+
+{{ paper.abstract | default('Abstract not available.') }}
+
+{% if not loop.last %}
+---
+
+{% endif %}
+{% endfor %}
+
+---
+
+*{{ topic_name }} technical digest — {{ run_date }} — {{ total_papers }} papers.*

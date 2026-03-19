@@ -1,0 +1,46 @@
+# ⚡ {{ topic_name }} — Executive Summary
+
+**{{ run_date }}** | **{{ total_papers }} papers**
+
+---
+
+{% if trends %}
+## Key Trends
+
+{% if trends.emerging_themes is defined and trends.emerging_themes %}
+{% for theme in trends.emerging_themes %}
+- 🔥 {{ theme }}
+{% endfor %}
+{% endif %}
+{% if trends.notable_shifts is defined and trends.notable_shifts %}
+{% for shift in trends.notable_shifts %}
+- 🔄 {{ shift }}
+{% endfor %}
+{% endif %}
+
+---
+
+{% endif %}
+## Top Papers
+
+{% for paper in papers %}
+### {{ paper.title }}
+
+**Score:** {{ paper.score | default(0) | round(1) }}/10
+{% if paper.citation_count is defined and paper.citation_count %} | **Citations:** {{ paper.citation_count }}{% endif %}
+
+- **What:** {{ paper.reasoning | default('No summary available.') }}
+- **Categories:** {{ paper.categories | join(', ') }}
+- **Authors:** {{ paper.authors if paper.authors is string else paper.authors | join(', ') }}
+
+📄 [PDF]({{ paper.pdf_url }})
+
+{% if not loop.last %}
+---
+
+{% endif %}
+{% endfor %}
+
+---
+
+*Executive digest — {{ run_date }} — {{ total_papers }} papers reviewed.*

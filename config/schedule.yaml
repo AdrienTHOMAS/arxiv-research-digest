@@ -1,0 +1,30 @@
+# Schedule configuration for ArXiv Research Digest
+#
+# Each topic can have its own cron expression and output format.
+# Topics not listed here will use the 'default' schedule.
+#
+# Cron format: minute hour day_of_month month day_of_week
+#   day_of_week: 0=Monday ... 6=Sunday (ISO convention used by APScheduler)
+#
+# Available formats: newsletter, technical, executive
+
+topics:
+  machine_learning:
+    cron: "0 8 * * 0-4"      # Monday–Friday at 08:00
+    format: newsletter
+
+  nlp:
+    cron: "0 9 * * 0-4"      # Monday–Friday at 09:00
+    format: technical
+
+  computer_vision:
+    cron: "30 8 * * 0-4"     # Monday–Friday at 08:30
+    format: newsletter
+
+  reinforcement_learning:
+    cron: "0 10 * * 0,2,4"   # Monday, Wednesday, Friday at 10:00
+    format: technical
+
+default:
+  cron: "0 8 * * 0-4"        # Monday–Friday at 08:00
+  format: newsletter
