@@ -1,0 +1,71 @@
+topics:
+  - id: machine_learning
+    name: Machine Learning
+    description: >-
+      Core machine learning research including deep learning architectures,
+      optimization methods, generalization theory, and foundational advances.
+    arxiv_categories:
+      - cs.LG
+      - stat.ML
+    keywords:
+      - deep learning
+      - neural network
+      - transformer
+      - optimization
+      - generalization
+      - representation learning
+      - foundation model
+    max_papers: 25
+
+  - id: nlp
+    name: Natural Language Processing
+    description: >-
+      Natural language processing and computational linguistics including
+      large language models, text generation, and language understanding.
+    arxiv_categories:
+      - cs.CL
+    keywords:
+      - language model
+      - text generation
+      - machine translation
+      - sentiment analysis
+      - named entity recognition
+      - question answering
+      - summarization
+      - prompt engineering
+    max_papers: 20
+
+  - id: computer_vision
+    name: Computer Vision
+    description: >-
+      Computer vision research including image recognition, object detection,
+      segmentation, video understanding, and generative visual models.
+    arxiv_categories:
+      - cs.CV
+    keywords:
+      - image classification
+      - object detection
+      - segmentation
+      - diffusion model
+      - image generation
+      - video understanding
+      - visual reasoning
+    max_papers: 20
+
+  - id: reinforcement_learning
+    name: Reinforcement Learning
+    description: >-
+      Reinforcement learning research including multi-agent systems, policy
+      optimization, model-based methods, and real-world applications.
+    arxiv_categories:
+      - cs.LG
+      - cs.AI
+    keywords:
+      - reinforcement learning
+      - policy gradient
+      - reward shaping
+      - multi-agent
+      - model-based RL
+      - offline reinforcement learning
+      - RLHF
+    max_papers: 15
