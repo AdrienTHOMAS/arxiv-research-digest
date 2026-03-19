@@ -29,4 +29,4 @@ async def test_health_has_version(async_client: AsyncClient) -> None:
     assert response.status_code == 200
 
     body = response.json()
-    assert body["version"] == "2.0.0"
+    assert body["version"] == "1.0.0"

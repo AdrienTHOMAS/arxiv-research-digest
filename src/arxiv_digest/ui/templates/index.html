@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — ArXiv Research Digest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Latest Digests</h1>
+    <p class="subtitle">AI-powered research monitoring across your topics</p>
+</div>
+
+{% if digests %}
+<div class="card-grid">
+    {% for digest in digests %}
+    <a href="/digest/{{ digest.id }}" class="card">
+        <div class="card-header">
+            <span class="card-topic">{{ digest.topic_id }}</span>
+            <span class="card-status status-{{ digest.status }}">{{ digest.status }}</span>
+        </div>
+        <div class="card-body">
+            <div class="card-date">{{ digest.run_date }}</div>
+            <div class="card-stats">
+                <div class="stat">
+                    <span class="stat-value">{{ digest.paper_count }}</span>
+                    <span class="stat-label">papers</span>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <h2>No digests yet</h2>
+    <p>Run your first digest to see results here.</p>
+</div>
+{% endif %}
+{% endblock %}

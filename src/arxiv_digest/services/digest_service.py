@@ -150,7 +150,7 @@ class DigestService:
 
         digest_id = str(result.get("digest_id", ""))
         payload: dict[str, object] = {
-            "title": f"ArXiv Digest Ready",
+            "title": "ArXiv Digest Ready",
             "summary": str(result.get("content", "")),
             "paper_count": result.get("paper_count", 0),
             "digest_id": digest_id,

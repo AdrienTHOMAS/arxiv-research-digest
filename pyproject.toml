@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arxiv-research-digest"
-version = "2.0.0"
+version = "1.0.0"
 description = "Agentic ArXiv research monitor powered by Claude"
 requires-python = ">=3.12"
 license = {text = "MIT"}
@@ -27,8 +27,10 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "ARG001", "ARG002", "PLR2004", "ANN401", "PLR0913"]
+"tests/**/*.py" = ["S101", "S108", "ARG001", "ARG002", "PLR2004", "ANN401", "PLR0913", "PLC0415", "TC003"]
 "src/arxiv_digest/api/**/*.py" = ["B008", "PLR0913"]
+"src/arxiv_digest/main.py" = ["B008", "PLR0913"]
+"src/arxiv_digest/services/digest_service.py" = ["A002", "DTZ011", "TRY300", "TRY400"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["arxiv_digest"]

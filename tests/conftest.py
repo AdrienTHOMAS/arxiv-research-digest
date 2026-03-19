@@ -142,15 +142,15 @@ async def app(
     Yields:
         A configured :class:`FastAPI` application instance.
     """
-    from arxiv_digest.api.deps import get_db_session  # noqa: PLC0415
-    from arxiv_digest.config import Settings, get_settings  # noqa: PLC0415
+    from arxiv_digest.api.deps import get_db_session
+    from arxiv_digest.config import Settings, get_settings
 
     test_settings = Settings(
         DATABASE_URL="sqlite+aiosqlite://",
         API_KEY="test-api-key-12345",  # type: ignore[arg-type]
         TOPICS_FILE=topics_file,
         LOG_LEVEL="DEBUG",
-        CACHE_DIR=Path("/tmp/arxiv-test-cache"),  # noqa: S108
+        CACHE_DIR=Path("/tmp/arxiv-test-cache"),
     )
 
     get_settings.cache_clear()
@@ -164,7 +164,7 @@ async def app(
         patch("arxiv_digest.api.v1.health.get_settings", return_value=test_settings),
         patch("arxiv_digest.schemas.topic.get_settings", return_value=test_settings),
     ):
-        from arxiv_digest.main import create_app  # noqa: PLC0415
+        from arxiv_digest.main import create_app
 
         test_app = create_app()
         test_app.dependency_overrides[get_db_session] = _override_db

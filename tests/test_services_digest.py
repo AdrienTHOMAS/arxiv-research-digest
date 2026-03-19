@@ -3,15 +3,11 @@
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
 from arxiv_digest.models.run_log import RunLog
-
-if TYPE_CHECKING:
-    pass
 
 # Ensure the agent.loop module is importable even without the anthropic SDK.
 # We inject a fake module so the lazy import inside DigestService.run_digest
@@ -26,7 +22,6 @@ sys.modules.setdefault("arxiv_digest.agent.prompts", MagicMock())
 sys.modules.setdefault("arxiv_digest.agent.tools_def", MagicMock())
 
 from arxiv_digest.services.digest_service import DigestService  # noqa: E402
-
 
 # ── Fixtures ────────────────────────────────────────────────────────────
 

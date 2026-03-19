@@ -51,7 +51,7 @@ class Settings(BaseSettings):
 
     # ── Application metadata ────────────────────────────────────────────
     APP_NAME: str = "arxiv-research-digest"
-    APP_VERSION: str = "2.0.0"
+    APP_VERSION: str = "1.0.0"
 
 
 @functools.lru_cache(maxsize=1)

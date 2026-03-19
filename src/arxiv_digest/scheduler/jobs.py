@@ -105,7 +105,9 @@ def setup_scheduler() -> AsyncIOScheduler:
 
     topics = load_topics()
     schedule_config = _load_schedule_config()
-    default_cfg = schedule_config.get("default", {"cron": _DEFAULT_CRON, "format": _DEFAULT_FORMAT})
+    default_cfg = schedule_config.get(
+        "default", {"cron": _DEFAULT_CRON, "format": _DEFAULT_FORMAT},
+    )
 
     for topic in topics:
         cfg = schedule_config.get(topic.id, default_cfg)

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Digest: {{ digest.topic_id }} — ArXiv Research Digest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <a href="/" class="back-link">&larr; Back to dashboard</a>
+    <h1>{{ digest.topic_id }}</h1>
+    <div class="digest-meta">
+        <span class="card-status status-{{ digest.status }}">{{ digest.status }}</span>
+        <span>{{ digest.run_date }}</span>
+        <span>{{ digest.paper_count }} papers</span>
+    </div>
+</div>
+
+{% if digest.summary %}
+<section class="digest-summary">
+    <h2>Summary</h2>
+    <div id="summary-content" class="markdown-body" data-markdown="{{ digest.summary | e }}">
+        <pre>{{ digest.summary }}</pre>
+    </div>
+</section>
+{% endif %}
+
+{% if digest.papers %}
+<section class="digest-papers">
+    <h2>Papers</h2>
+    <div class="paper-list">
+        {% for paper in digest.papers %}
+        <div class="paper-card">
+            <div class="paper-header">
+                <span class="paper-score" title="Relevance score">
+                    {% if paper.relevance_score is not none %}
+                        {{ "%.0f"|format(paper.relevance_score * 100) }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </span>
+                <h3 class="paper-title">{{ paper.title }}</h3>
+            </div>
+            <div class="paper-meta">
+                <span class="paper-date">{{ paper.published_date }}</span>
+                <span class="paper-arxiv">{{ paper.arxiv_id }}</span>
+                {% for cat in paper.categories %}
+                <span class="paper-category">{{ cat }}</span>
+                {% endfor %}
+            </div>
+            <p class="paper-abstract">{{ paper.abstract[:300] }}{% if paper.abstract|length > 300 %}...{% endif %}</p>
+            <div class="paper-actions">
+                <a href="{{ paper.pdf_url }}" target="_blank" rel="noopener" class="btn btn-sm">PDF</a>
+                <a href="https://arxiv.org/abs/{{ paper.arxiv_id }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">ArXiv</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

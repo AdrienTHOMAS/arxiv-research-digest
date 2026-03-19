@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Papers — ArXiv Research Digest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Papers</h1>
+    <p class="subtitle">Browse and filter scored research papers</p>
+</div>
+
+<form id="paper-filters" class="filter-bar">
+    <div class="filter-group">
+        <label for="filter-topic">Topic</label>
+        <select id="filter-topic" name="topic_id">
+            <option value="">All topics</option>
+            {% for topic in topics %}
+            <option value="{{ topic.id }}" {% if request.query_params.get('topic_id') == topic.id %}selected{% endif %}>{{ topic.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filter-min-score">Min Score</label>
+        <input type="number" id="filter-min-score" name="min_score" min="0" max="1" step="0.05"
+               value="{{ request.query_params.get('min_score', '') }}" placeholder="0.0">
+    </div>
+    <div class="filter-group">
+        <label for="filter-page-size">Per Page</label>
+        <select id="filter-page-size" name="page_size">
+            <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+            <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+            <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+        </select>
+    </div>
+    <button type="submit" class="btn">Filter</button>
+</form>
+
+<div id="papers-table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="relevance_score">Score</th>
+                <th class="sortable" data-sort="title">Title</th>
+                <th>ArXiv ID</th>
+                <th class="sortable" data-sort="published_date">Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="papers-tbody">
+            {% for paper in papers %}
+            <tr>
+                <td class="cell-score">
+                    {% if paper.relevance_score is not none %}
+                        {{ "%.0f"|format(paper.relevance_score * 100) }}%
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td class="cell-title">{{ paper.title }}</td>
+                <td class="cell-id">{{ paper.arxiv_id }}</td>
+                <td class="cell-date">{{ paper.published_date }}</td>
+                <td class="cell-actions">
+                    <a href="https://arxiv.org/abs/{{ paper.arxiv_id }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not papers %}
+    <div class="empty-state">
+        <p>No papers match your filters.</p>
+    </div>
+    {% endif %}
+
+    {% if pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}&page_size={{ page_size }}{% if topic_id %}&topic_id={{ topic_id }}{% endif %}{% if min_score %}&min_score={{ min_score }}{% endif %}" class="btn btn-sm">&larr; Previous</a>
+        {% endif %}
+        <span class="page-info">Page {{ page }} of {{ pages }} ({{ total }} papers)</span>
+        {% if page < pages %}
+        <a href="?page={{ page + 1 }}&page_size={{ page_size }}{% if topic_id %}&topic_id={{ topic_id }}{% endif %}{% if min_score %}&min_score={{ min_score }}{% endif %}" class="btn btn-sm">Next &rarr;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
