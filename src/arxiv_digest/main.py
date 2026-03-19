@@ -77,7 +77,7 @@ def _configure_structlog(log_level: str) -> None:
         ],
         wrapper_class=structlog.stdlib.BoundLogger,
         context_class=dict,
-        logger_factory=structlog.PrintLoggerFactory(file=sys.stderr),
+        logger_factory=structlog.stdlib.LoggerFactory(),
         cache_logger_on_first_use=True,
     )
 
@@ -271,3 +271,5 @@ def create_app() -> FastAPI:
         )
 
     return app
+
+app = create_app()
