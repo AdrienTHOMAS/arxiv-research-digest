@@ -99,7 +99,7 @@ def run(
 
     while True:
         response = client.messages.create(
-            model="claude-opus-4-5-20250514",
+            model="claude-opus-4-6",
             max_tokens=16384,
             system=SYSTEM_PROMPT,
             tools=TOOLS,
