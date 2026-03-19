@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-lint-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-lint-
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Ruff check
+        run: ruff check src/ tests/
+
+      - name: Mypy strict
+        run: mypy --strict src/
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: arxiv
+          POSTGRES_PASSWORD: arxiv
+          POSTGRES_DB: arxiv_digest_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U arxiv -d arxiv_digest_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-test-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-test-
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Run tests with coverage
+        run: pytest --cov=arxiv_digest --cov-report=xml --cov-report=term-missing
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///
+          API_KEY: ci-test-api-key
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+        if: always()
